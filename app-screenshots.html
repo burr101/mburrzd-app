@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MBURRZD — App Store Screenshots</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1a1a1a;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px 60px;
+      gap: 20px;
+    }
+
+    .instructions {
+      background: #2a2a2a;
+      border: 1px solid #C9A96E;
+      color: #ccc;
+      padding: 16px 24px;
+      max-width: 480px;
+      font-size: 13px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .instructions strong { color: #C9A96E; }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-btn {
+      background: #2a2a2a;
+      border: 1px solid #333;
+      color: #888;
+      padding: 8px 16px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-btn.active { background: #C9A96E; color: #000; border-color: #C9A96E; font-weight: 600; }
+
+    /* The screen — 414×896 = iPhone 6.5" CSS size (×3 = 1242×2688px actual) */
+    .screen-wrap {
+      width: 414px;
+      height: 896px;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      display: none;
+      flex-shrink: 0;
+    }
+
+    .screen-wrap.active { display: block; }
+
+    /* ─── SCREEN 1: HOME HERO ─── */
+    #s1 { background: #0a0a0a; }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .hero-grad {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 25%, rgba(0,0,0,0.5) 65%, #000 100%);
+    }
+
+    .hero-top {
+      position: absolute;
+      top: 50px;
+      left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 22px;
+      z-index: 10;
+    }
+
+    .hero-logo { height: 30px; object-fit: contain; }
+
+    .hero-icons { display: flex; gap: 18px; }
+    .hero-icons svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    .hero-content {
+      position: absolute;
+      bottom: 120px;
+      left: 0; right: 0;
+      padding: 0 24px;
+      z-index: 10;
+    }
+
+    .hero-eyebrow { color: rgba(255,255,255,0.5); font-size: 10px; letter-spacing: 4px; margin-bottom: 14px; text-transform: uppercase; }
+    .hero-headline { color: #fff; font-size: 42px; font-family: Georgia, serif; font-weight: 400; line-height: 1.2; margin-bottom: 32px; }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #C9A96E;
+      padding: 14px 24px;
+      color: #000;
+      font-size: 10px;
+      letter-spacing: 3px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .hero-cta svg { width: 12px; height: 12px; stroke: #000; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Bottom nav */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 90px;
+      background: rgba(0,0,0,0.95);
+      border-top: 1px solid #1a1a1a;
+      display: flex;
+      align-items: flex-start;
+      padding-top: 12px;
+      z-index: 20;
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-item svg { width: 22px; height: 22px; stroke: #444; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-item.active svg { stroke: #C9A96E; }
+    .nav-item span { font-size: 9px; letter-spacing: 1.5px; color: #444; text-transform: uppercase; }
+    .nav-item.active span { color: #C9A96E; }
+
+    /* ─── SCREEN 2: SHOP ─── */
+    #s2 { background: #000; }
+
+    .screen-header {
+      padding: 54px 20px 16px;
+      border-bottom: 1px solid #141414;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .screen-title { color: #fff; font-size: 11px; letter-spacing: 5px; }
+
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      padding: 14px 20px;
+      overflow-x: auto;
+      border-bottom: 1px solid #0f0f0f;
+    }
+
+    .chip {
+      padding: 7px 14px;
+      border: 1px solid #222;
+      color: #666;
+      font-size: 9px;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .chip.active { border-color: #C9A96E; color: #C9A96E; }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: #111;
+      padding: 1px;
+      overflow-y: auto;
+      height: calc(896px - 200px);
+    }
+
+    .product-card {
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-img-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #111 0%, #1a1a1a 50%, #111 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-img-placeholder svg { width: 40px; height: 40px; stroke: #222; fill: none; stroke-width: 1; }
+
+    .product-info { padding: 10px 12px 14px; }
+    .product-name { color: #ccc; font-size: 11px; letter-spacing: 0.5px; margin-bottom: 5px; line-height: 1.4; }
+    .product-price { color: #C9A96E; font-size: 13px; font-family: Georgia, serif; }
+    .product-sub { color: #444; font-size: 9px; letter-spacing: 1px; margin-top: 2px; }
+
+    /* ─── SCREEN 3: PRODUCT DETAIL ─── */
+    #s3 { background: #000; overflow-y: auto; }
+
+    .pdp-image {
+      width: 100%;
+      height: 460px;
+      object-fit: cover;
+      object-position: center top;
+      background: #111;
+      display: block;
+    }
+
+    .pdp-image-placeholder {
+      width: 100%;
+      height: 460px;
+      background: linear-gradient(180deg, #111 0%, #1a1a1a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pdp-back {
+      position: absolute;
+      top: 52px;
+      left: 18px;
+      z-index: 10;
+      background: rgba(0,0,0,0.6);
+      width: 36px; height: 36px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pdp-back svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .pdp-content { padding: 20px 20px 100px; }
+
+    .pdp-category { color: #555; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
+    .pdp-name { color: #fff; font-size: 22px; font-family: Georgia, serif; font-weight: 400; margin-bottom: 6px; line-height: 1.3; }
+    .pdp-price { color: #C9A96E; font-size: 20px; font-family: Georgia, serif; margin-bottom: 20px; }
+
+    .pdp-section-label { color: #555; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+
+    .size-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .size-btn { width: 50px; height: 42px; border: 1px solid #222; color: #888; font-size: 11px; display: flex; align-items: center; justify-content: center; }
+    .size-btn.active { border-color: #C9A96E; color: #C9A96E; }
+
+    .pdp-add-btn {
+      position: absolute;
+      bottom: 90px; left: 20px; right: 20px;
+      background: #C9A96E;
+      color: #000;
+      font-size: 10px;
+      letter-spacing: 4px;
+      font-weight: 700;
+      padding: 18px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .pdp-desc { color: #555; font-size: 12px; line-height: 1.8; margin-top: 10px; }
+
+    /* ─── SCREEN 4: FIT QUIZ ─── */
+    #s4 { background: #000; }
+
+    .quiz-header {
+      padding: 54px 20px 20px;
+      border-bottom: 1px solid #141414;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .quiz-title { color: #fff; font-size: 11px; letter-spacing: 5px; }
+    .quiz-step { color: #444; font-size: 10px; letter-spacing: 2px; }
+
+    .quiz-progress {
+      height: 2px;
+      background: #111;
+      margin: 0;
+    }
+
+    .quiz-progress-fill { height: 100%; width: 50%; background: #C9A96E; }
+
+    .quiz-content { padding: 36px 24px; }
+
+    .quiz-q-label { color: #C9A96E; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
+    .quiz-question { color: #fff; font-size: 26px; font-family: Georgia, serif; font-weight: 400; line-height: 1.3; margin-bottom: 8px; }
+    .quiz-sub { color: #555; font-size: 12px; line-height: 1.7; margin-bottom: 36px; }
+
+    .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+
+    .quiz-option {
+      border: 1px solid #1e1e1e;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .quiz-option.selected { border-color: #C9A96E; background: rgba(201,169,110,0.06); }
+
+    .option-radio {
+      width: 18px; height: 18px;
+      border: 1px solid #333;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .option-radio.filled { border-color: #C9A96E; }
+    .option-radio.filled::after { content: ''; width: 8px; height: 8px; border-radius: 4px; background: #C9A96E; }
+
+    .option-text { flex: 1; }
+    .option-label { color: #ccc; font-size: 13px; margin-bottom: 2px; }
+    .option-sub { color: #555; font-size: 10px; letter-spacing: 0.5px; }
+
+    .quiz-next {
+      position: absolute;
+      bottom: 110px; left: 24px; right: 24px;
+      background: #C9A96E;
+      color: #000;
+      font-size: 10px;
+      letter-spacing: 4px;
+      font-weight: 700;
+      padding: 18px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    /* ─── SCREEN 5: ACCOUNT ─── */
+    #s5 { background: #000; }
+
+    .account-header {
+      padding: 54px 20px 20px;
+      border-bottom: 1px solid #141414;
+    }
+
+    .account-title { color: #fff; font-size: 11px; letter-spacing: 5px; }
+
+    .account-content { padding: 32px 24px; }
+
+    .apple-btn {
+      width: 100%;
+      height: 52px;
+      background: #fff;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .apple-btn svg { width: 18px; height: 18px; fill: #000; }
+    .apple-btn-text { font-size: 14px; font-weight: 600; color: #000; letter-spacing: 0.3px; }
+
+    .divider { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .divider-line { flex: 1; height: 1px; background: #1a1a1a; }
+    .divider-text { color: #444; font-size: 9px; letter-spacing: 2px; }
+
+    .auth-tabs { display: flex; border-bottom: 1px solid #1a1a1a; margin-bottom: 24px; }
+    .auth-tab { flex: 1; padding-bottom: 12px; text-align: center; font-size: 10px; letter-spacing: 3px; color: #444; }
+    .auth-tab.active { color: #C9A96E; border-bottom: 1px solid #C9A96E; }
+
+    .input-group { margin-bottom: 16px; }
+    .input-label { color: #555; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; display: block; }
+    .input-field { width: 100%; border: 1px solid #1a1a1a; background: transparent; color: #fff; padding: 14px; font-size: 14px; }
+
+    .sign-in-btn {
+      width: 100%;
+      background: #C9A96E;
+      color: #000;
+      font-size: 10px;
+      letter-spacing: 4px;
+      font-weight: 700;
+      padding: 18px;
+      text-align: center;
+      text-transform: uppercase;
+      margin-top: 8px;
+      margin-bottom: 16px;
+    }
+
+    .perks-section { margin-top: 32px; padding-top: 24px; border-top: 1px solid #141414; }
+    .perks-title { color: #fff; font-size: 10px; letter-spacing: 4px; margin-bottom: 16px; }
+    .perk-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .perk-dot { width: 4px; height: 4px; border-radius: 2px; background: #C9A96E; flex-shrink: 0; }
+    .perk-text { color: #666; font-size: 12px; }
+
+    .caption {
+      color: #555;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="instructions">
+    <strong>HOW TO CAPTURE SCREENSHOTS</strong><br><br>
+    1. Open Chrome → Press <strong>F12</strong> (DevTools)<br>
+    2. Click the <strong>device icon</strong> (top-left of DevTools)<br>
+    3. Set dimensions to <strong>414 × 896</strong> and DPR <strong>3</strong><br>
+    4. Click the <strong>⋮ menu</strong> in DevTools → <strong>"Capture screenshot"</strong><br>
+    5. Repeat for each screen below<br><br>
+    This produces <strong>1242 × 2688px</strong> — exactly what App Store requires.
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn active" onclick="show(1)">1. HOME</button>
+    <button class="nav-btn" onclick="show(2)">2. SHOP</button>
+    <button class="nav-btn" onclick="show(3)">3. PRODUCT</button>
+    <button class="nav-btn" onclick="show(4)">4. FIT QUIZ</button>
+    <button class="nav-btn" onclick="show(5)">5. ACCOUNT</button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 1 — HOME HERO
+  ══════════════════════════════════════ -->
+  <div class="screen-wrap active" id="s1">
+    <img class="hero-img" src="assets/hero1.png" alt="Hero" />
+    <div class="hero-grad"></div>
+
+    <div class="hero-top">
+      <img class="hero-logo" src="assets/logoo.png" alt="MBURRZD" />
+      <div class="hero-icons">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">NEW SEASON · SS26</p>
+      <p class="hero-headline">The Art of<br>Refined Dressing</p>
+      <div class="hero-cta">
+        EXPLORE COLLECTION
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <div class="nav-item active">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span>Home</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Shop</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span>Wishlist</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span>Cart</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Account</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 2 — SHOP
+  ══════════════════════════════════════ -->
+  <div class="screen-wrap" id="s2">
+    <div class="screen-header">
+      <span class="screen-title">SHOP</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+    </div>
+
+    <div class="filter-row">
+      <div class="chip active">ALL</div>
+      <div class="chip">SHIRTS</div>
+      <div class="chip">PANTS</div>
+      <div class="chip">OUTERWEAR</div>
+      <div class="chip">ACCESSORIES</div>
+      <div class="chip">SETS</div>
+    </div>
+
+    <div class="product-grid">
+      <!-- Product 1 -->
+      <div class="product-card">
+        <img src="assets/hero1.png" style="width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;" />
+        <div class="product-info">
+          <div class="product-name">Signature Monogram Polo</div>
+          <div class="product-price">$185</div>
+          <div class="product-sub">3XL – 6XL</div>
+        </div>
+      </div>
+      <!-- Product 2 -->
+      <div class="product-card">
+        <div class="product-img-placeholder">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Leather Flare Trousers</div>
+          <div class="product-price">$320</div>
+          <div class="product-sub">34 – 52</div>
+        </div>
+      </div>
+      <!-- Product 3 -->
+      <div class="product-card">
+        <div class="product-img-placeholder">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Oversized Linen Blazer</div>
+          <div class="product-price">$445</div>
+          <div class="product-sub">XL – 7XL</div>
+        </div>
+      </div>
+      <!-- Product 4 -->
+      <div class="product-card">
+        <div class="product-img-placeholder">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Silk Jersey Tee — Black</div>
+          <div class="product-price">$145</div>
+          <div class="product-sub">2XL – 6XL</div>
+        </div>
+      </div>
+      <!-- Product 5 -->
+      <div class="product-card">
+        <div class="product-img-placeholder">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Wide Leg Cargo Pants</div>
+          <div class="product-price">$265</div>
+          <div class="product-sub">34 – 54</div>
+        </div>
+      </div>
+      <!-- Product 6 -->
+      <div class="product-card">
+        <div class="product-img-placeholder">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Premium Hoodie Set</div>
+          <div class="product-price">$380</div>
+          <div class="product-sub">XL – 6XL</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Home</span></div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Shop</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Wishlist</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>Cart</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Account</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 3 — PRODUCT DETAIL
+  ══════════════════════════════════════ -->
+  <div class="screen-wrap" id="s3" style="overflow-y:auto;">
+    <div class="pdp-back">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+
+    <img src="assets/hero1.png" class="pdp-image" alt="Product" />
+
+    <div class="pdp-content">
+      <div class="pdp-category">SS26 COLLECTION</div>
+      <div class="pdp-name">Signature Monogram<br>Polo Shirt</div>
+      <div class="pdp-price">$185.00</div>
+
+      <div class="pdp-section-label" style="margin-bottom:10px;">SELECT SIZE</div>
+      <div class="size-grid">
+        <div class="size-btn">XL</div>
+        <div class="size-btn">2XL</div>
+        <div class="size-btn active">3XL</div>
+        <div class="size-btn">4XL</div>
+        <div class="size-btn">5XL</div>
+        <div class="size-btn">6XL</div>
+      </div>
+
+      <div class="pdp-section-label" style="margin-bottom:10px;">DETAILS</div>
+      <div class="pdp-desc">
+        A signature piece for the discerning gentleman. Crafted from premium satin-feel fabric with all-over MBURRZD monogram print. Contrast white stripe detailing. Relaxed fit designed for the bigger silhouette.
+        <br><br>
+        · 100% Polyester satin<br>
+        · Machine wash cold<br>
+        · Extended sizing: XL – 6XL
+      </div>
+    </div>
+
+    <div class="pdp-add-btn">ADD TO BAG</div>
+
+    <div class="bottom-nav" style="position:relative;margin-top:80px;">
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Home</span></div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Shop</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Wishlist</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>Cart</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Account</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 4 — FIT QUIZ
+  ══════════════════════════════════════ -->
+  <div class="screen-wrap" id="s4">
+    <div class="quiz-header">
+      <span class="quiz-title">FIND YOUR FIT</span>
+      <span class="quiz-step">STEP 2 OF 4</span>
+    </div>
+    <div class="quiz-progress"><div class="quiz-progress-fill"></div></div>
+
+    <div class="quiz-content">
+      <div class="quiz-q-label">Body Type</div>
+      <div class="quiz-question">How would you describe your build?</div>
+      <div class="quiz-sub">This helps us recommend the best cut and fit for your frame.</div>
+
+      <div class="quiz-options">
+        <div class="quiz-option">
+          <div class="option-radio"></div>
+          <div class="option-text">
+            <div class="option-label">Athletic</div>
+            <div class="option-sub">Broad shoulders, defined waist</div>
+          </div>
+        </div>
+        <div class="quiz-option selected">
+          <div class="option-radio filled"></div>
+          <div class="option-text">
+            <div class="option-label">Big &amp; Tall</div>
+            <div class="option-sub">Large frame, height 6'1" and above</div>
+          </div>
+        </div>
+        <div class="quiz-option">
+          <div class="option-radio"></div>
+          <div class="option-text">
+            <div class="option-label">Full Figure</div>
+            <div class="option-sub">Fuller midsection, standard height</div>
+          </div>
+        </div>
+        <div class="quiz-option">
+          <div class="option-radio"></div>
+          <div class="option-text">
+            <div class="option-label">Tall &amp; Lean</div>
+            <div class="option-sub">Slender build, height 6'2" and above</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-next">CONTINUE →</div>
+
+    <div class="bottom-nav">
+      <div class="nav-item active"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Home</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Shop</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Wishlist</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>Cart</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Account</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 5 — ACCOUNT
+  ══════════════════════════════════════ -->
+  <div class="screen-wrap" id="s5">
+    <div class="account-header">
+      <div class="account-title">ACCOUNT</div>
+    </div>
+
+    <div class="account-content">
+      <div class="apple-btn">
+        <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <span class="apple-btn-text">Sign in with Apple</span>
+      </div>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">OR</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="auth-tabs">
+        <div class="auth-tab active">SIGN IN</div>
+        <div class="auth-tab">REGISTER</div>
+      </div>
+
+      <div class="input-group">
+        <span class="input-label">Email</span>
+        <div class="input-field" style="color:#444;">member@example.com</div>
+      </div>
+      <div class="input-group">
+        <span class="input-label">Password</span>
+        <div class="input-field" style="color:#444;">••••••••••</div>
+      </div>
+
+      <div class="sign-in-btn">SIGN IN</div>
+
+      <div class="perks-section">
+        <div class="perks-title">MEMBER PERKS</div>
+        <div class="perk-row"><div class="perk-dot"></div><div class="perk-text">Early access to new drops</div></div>
+        <div class="perk-row"><div class="perk-dot"></div><div class="perk-text">Exclusive member pricing</div></div>
+        <div class="perk-row"><div class="perk-dot"></div><div class="perk-text">Seamless order tracking</div></div>
+        <div class="perk-row"><div class="perk-dot"></div><div class="perk-text">Saved wishlist &amp; preferences</div></div>
+      </div>
+    </div>
+
+    <div class="bottom-nav" style="position:relative;">
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Home</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Shop</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Wishlist</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>Cart</span></div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Account</span></div>
+    </div>
+  </div>
+
+  <script>
+    function show(n) {
+      document.querySelectorAll('.screen-wrap').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('s' + n).classList.add('active');
+      document.querySelectorAll('.nav-btn')[n - 1].classList.add('active');
+    }
+  </script>
+</body>
+</html>

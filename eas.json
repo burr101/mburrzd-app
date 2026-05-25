@@ -1,0 +1,37 @@
+{
+  "cli": {
+    "version": ">= 5.9.1"
+  },
+  "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "distribution": "internal",
+        "simulator": false
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle",
+        "image": "latest"
+      },
+      "ios": {
+        "distribution": "store",
+        "image": "latest"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleTeamId": "A32PJN4364",
+        "ascAppId": "6765707027",
+        "ascApiKeyPath": "C:\\Users\\Royston_Nnamdi\\Downloads\\AuthKey_825Q8Q7829.p8",
+        "ascApiKeyIssuerId": "b6681e95-fa80-4d96-8cbf-27e4f35ca738",
+        "ascApiKeyId": "825Q8Q7829"
+      }
+    }
+  }
+}

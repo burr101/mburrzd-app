@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "MBURRZD",
+    "slug": "mburrzd-fashion",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logoo.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/logoo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "plugins": [
+      "expo-apple-authentication"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mburrzd.fashion",
+      "usesAppleSignIn": true,
+      "buildNumber": "1",
+      "deploymentTarget": "13.4",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "com.mburrzd.fashion"
+    },
+    "platforms": ["ios", "android"],
+    "extra": {
+      "eas": {
+        "projectId": "b7b2c393-5690-4da0-a61a-17b9380948d1"
+      }
+    }
+  }
+}

@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MBURRZD — Mobile App Documentation</title>
+  <style>
+    /* ─── FONTS ─── */
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+    /* ─── RESET ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── ROOT VARIABLES ─── */
+    :root {
+      --gold:       #C9A96E;
+      --gold-light: #E8D5B0;
+      --gold-dim:   rgba(201,169,110,0.15);
+      --black:      #0A0A0A;
+      --charcoal:   #1A1A1A;
+      --dark:       #111111;
+      --mid:        #2A2A2A;
+      --muted:      #888888;
+      --light:      #CCCCCC;
+      --white:      #FFFFFF;
+      --page-bg:    #F8F6F2;
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --sans:       'Inter', system-ui, sans-serif;
+    }
+
+    /* ─── PAGE SETUP ─── */
+    html { font-size: 10pt; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--page-bg);
+      color: #1a1a1a;
+      line-height: 1.7;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ─── PRINT ─── */
+    @media print {
+      html { font-size: 9.5pt; }
+      body { background: #fff; }
+      .page-break { page-break-after: always; break-after: page; }
+      .no-break { page-break-inside: avoid; break-inside: avoid; }
+      .cover { page-break-after: always; break-after: page; }
+      header.doc-header { display: none; }
+      .toc { page-break-after: always; break-after: page; }
+    }
+
+    /* ─── LAYOUT ─── */
+    .document {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 0 60px rgba(0,0,0,0.08);
+    }
+
+    section.chapter {
+      padding: 56px 72px;
+      border-bottom: 1px solid #ece9e3;
+    }
+
+    section.chapter:last-child { border-bottom: none; }
+
+    /* ─── COVER PAGE ─── */
+    .cover {
+      background: var(--black);
+      color: var(--white);
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      border-bottom: none;
+    }
+
+    .cover-accent-bar {
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+
+    .cover-body {
+      padding: 80px 72px 60px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cover-eyebrow {
+      font-family: var(--sans);
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: var(--gold);
+      margin-bottom: 32px;
+      text-transform: uppercase;
+    }
+
+    .cover-brand {
+      font-family: var(--serif);
+      font-size: 72pt;
+      font-weight: 300;
+      letter-spacing: 12px;
+      color: var(--white);
+      line-height: 0.9;
+      margin-bottom: 16px;
+    }
+
+    .cover-rule {
+      width: 80px;
+      height: 1px;
+      background: var(--gold);
+      margin: 36px 0;
+      opacity: 0.6;
+    }
+
+    .cover-title {
+      font-family: var(--serif);
+      font-size: 26pt;
+      font-weight: 300;
+      color: var(--light);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .cover-subtitle {
+      font-family: var(--sans);
+      font-size: 10pt;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .cover-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-top: 64px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 40px;
+    }
+
+    .cover-meta-item {
+      padding: 0 0 32px;
+    }
+
+    .cover-meta-label {
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .cover-meta-value {
+      font-family: var(--serif);
+      font-size: 13pt;
+      font-weight: 300;
+      color: var(--white);
+    }
+
+    .cover-footer {
+      padding: 28px 72px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cover-footer-text {
+      font-size: 7.5pt;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 1.5px;
+    }
+
+    .cover-confidential {
+      font-size: 7pt;
+      letter-spacing: 2px;
+      color: rgba(201,169,110,0.4);
+      text-transform: uppercase;
+    }
+
+    /* ─── TABLE OF CONTENTS ─── */
+    .toc {
+      background: var(--charcoal);
+      color: var(--white);
+      padding: 72px;
+      border-bottom: none;
+    }
+
+    .toc-eyebrow {
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .toc-title {
+      font-family: var(--serif);
+      font-size: 28pt;
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 48px;
+      letter-spacing: 1px;
+    }
+
+    .toc-list {
+      list-style: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .toc-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .toc-item-left {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+    }
+
+    .toc-num {
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--gold);
+      min-width: 28px;
+    }
+
+    .toc-label {
+      font-size: 11pt;
+      color: var(--light);
+      font-weight: 300;
+    }
+
+    .toc-dots {
+      flex: 1;
+      border-bottom: 1px dotted rgba(255,255,255,0.12);
+      margin: 0 16px;
+      position: relative;
+      top: -3px;
+    }
+
+    .toc-page {
+      font-size: 8.5pt;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ─── CHAPTER HEADERS ─── */
+    .chapter-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 40px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid #ece9e3;
+    }
+
+    .chapter-num {
+      font-family: var(--serif);
+      font-size: 48pt;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      opacity: 0.35;
+      min-width: 64px;
+      text-align: right;
+    }
+
+    .chapter-title-group {
+      flex: 1;
+      padding-top: 8px;
+    }
+
+    .chapter-eyebrow {
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .chapter-title {
+      font-family: var(--serif);
+      font-size: 26pt;
+      font-weight: 400;
+      color: var(--black);
+      line-height: 1.1;
+      letter-spacing: 0.5px;
+    }
+
+    /* ─── BODY TEXT ─── */
+    p {
+      font-size: 10pt;
+      color: #3a3a3a;
+      margin-bottom: 14px;
+      font-weight: 400;
+    }
+
+    /* ─── SECTION HEADERS WITHIN CHAPTERS ─── */
+    h3 {
+      font-family: var(--sans);
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin: 36px 0 16px;
+    }
+
+    h4 {
+      font-family: var(--serif);
+      font-size: 14pt;
+      font-weight: 400;
+      color: var(--black);
+      margin: 28px 0 10px;
+    }
+
+    /* ─── TABLES ─── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 28px;
+      font-size: 9.5pt;
+    }
+
+    thead tr {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    thead th {
+      padding: 11px 16px;
+      text-align: left;
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #ece9e3;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #faf8f4;
+    }
+
+    tbody td {
+      padding: 11px 16px;
+      color: #2a2a2a;
+      vertical-align: top;
+    }
+
+    tbody td:first-child {
+      font-weight: 600;
+      color: var(--black);
+      white-space: nowrap;
+    }
+
+    /* ─── CODE BLOCKS ─── */
+    .code-block {
+      background: var(--black);
+      border-left: 3px solid var(--gold);
+      padding: 18px 20px;
+      margin: 16px 0 24px;
+      border-radius: 2px;
+      overflow-x: auto;
+    }
+
+    .code-block code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 8.5pt;
+      color: #c8e6c9;
+      white-space: pre;
+      line-height: 1.8;
+    }
+
+    code.inline {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 8pt;
+      background: rgba(201,169,110,0.1);
+      color: #8a6a30;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    /* ─── CALLOUT BOXES ─── */
+    .callout {
+      border-left: 3px solid var(--gold);
+      background: #fdf9f2;
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 0 2px 2px 0;
+    }
+
+    .callout-label {
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .callout p {
+      margin: 0;
+      font-size: 9.5pt;
+      color: #4a4a4a;
+    }
+
+    .callout-warning {
+      border-left-color: #c0392b;
+      background: #fff8f8;
+    }
+
+    .callout-warning .callout-label { color: #c0392b; }
+
+    .callout-success {
+      border-left-color: #27ae60;
+      background: #f8fff9;
+    }
+
+    .callout-success .callout-label { color: #27ae60; }
+
+    /* ─── FEATURE CARDS ─── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .feature-card {
+      border: 1px solid #ece9e3;
+      padding: 20px;
+      border-radius: 2px;
+      background: #fff;
+    }
+
+    .feature-card-icon {
+      font-size: 18pt;
+      margin-bottom: 10px;
+    }
+
+    .feature-card-title {
+      font-family: var(--serif);
+      font-size: 13pt;
+      font-weight: 500;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+
+    .feature-card-desc {
+      font-size: 9pt;
+      color: #666;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ─── NUMBERED STEPS ─── */
+    .steps { list-style: none; margin: 20px 0; }
+
+    .steps li {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 20px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      min-width: 30px;
+      height: 30px;
+      background: var(--black);
+      color: var(--gold);
+      font-size: 8pt;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-body { flex: 1; }
+
+    .step-body strong {
+      display: block;
+      font-size: 10pt;
+      color: var(--black);
+      margin-bottom: 4px;
+    }
+
+    .step-body p {
+      font-size: 9.5pt;
+      margin: 0;
+      color: #555;
+    }
+
+    /* ─── CHECKLIST ─── */
+    .checklist { list-style: none; margin: 16px 0; }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0ede7;
+      font-size: 9.5pt;
+      color: #3a3a3a;
+    }
+
+    .check-box {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #C9A96E;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ─── ARCHITECTURE DIAGRAM ─── */
+    .arch-diagram {
+      background: var(--black);
+      color: var(--white);
+      padding: 32px;
+      margin: 24px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 8.5pt;
+      line-height: 2;
+    }
+
+    .arch-row { display: flex; align-items: center; gap: 12px; }
+    .arch-box {
+      border: 1px solid var(--gold);
+      padding: 6px 14px;
+      color: var(--gold);
+      font-size: 8pt;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    .arch-arrow { color: rgba(201,169,110,0.4); font-size: 10pt; }
+    .arch-label { color: rgba(255,255,255,0.3); font-size: 7.5pt; letter-spacing: 1px; }
+
+    /* ─── CREDENTIAL CARD ─── */
+    .cred-card {
+      background: var(--black);
+      color: var(--white);
+      padding: 24px 28px;
+      margin: 20px 0;
+      border-top: 2px solid var(--gold);
+    }
+
+    .cred-card-title {
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .cred-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .cred-row:last-child { border-bottom: none; }
+
+    .cred-key {
+      font-size: 8pt;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    .cred-val {
+      font-family: 'Courier New', monospace;
+      font-size: 8pt;
+      color: #c8e6c9;
+    }
+
+    /* ─── DIVIDERS ─── */
+    .gold-rule {
+      border: none;
+      border-top: 1px solid rgba(201,169,110,0.3);
+      margin: 32px 0;
+    }
+
+    /* ─── FOOTER ON PAGES ─── */
+    .page-footer {
+      background: var(--charcoal);
+      color: var(--muted);
+      padding: 20px 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 7.5pt;
+      letter-spacing: 1px;
+    }
+
+    .page-footer-brand {
+      font-family: var(--serif);
+      font-size: 11pt;
+      color: rgba(201,169,110,0.5);
+      letter-spacing: 3px;
+    }
+
+    /* ─── BADGE ─── */
+    .badge {
+      display: inline-block;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,169,110,0.3);
+      color: var(--gold);
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 3px 10px;
+      text-transform: uppercase;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+
+    .badge-dark {
+      background: var(--black);
+      border-color: rgba(255,255,255,0.1);
+      color: var(--muted);
+    }
+
+    /* ─── STACK PILL ─── */
+    .pill {
+      display: inline-block;
+      background: #f0ede7;
+      border: 1px solid #ddd8ce;
+      font-size: 8pt;
+      color: #555;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin: 3px;
+      font-weight: 500;
+    }
+
+    /* ─── TWO-COL LAYOUT ─── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin: 24px 0;
+    }
+
+    /* ─── SERVICE CARD ─── */
+    .service-card {
+      border: 1px solid #ece9e3;
+      padding: 20px;
+      background: #fff;
+    }
+
+    .service-card-name {
+      font-family: var(--serif);
+      font-size: 14pt;
+      font-weight: 500;
+      color: var(--black);
+      margin-bottom: 4px;
+    }
+
+    .service-card-role {
+      font-size: 8.5pt;
+      color: #888;
+      margin-bottom: 12px;
+    }
+
+    .service-card-cost {
+      font-size: 9pt;
+      color: var(--gold);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+<div class="document">
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  COVER                                                     -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="cover">
+    <div class="cover-accent-bar"></div>
+
+    <div class="cover-body">
+      <div class="cover-eyebrow">Technical &amp; Product Documentation</div>
+      <div class="cover-brand">MBURRZD</div>
+      <div class="cover-rule"></div>
+      <div class="cover-title">Mobile Commerce App</div>
+      <div class="cover-subtitle">iOS · React Native · Shopify · Supabase</div>
+
+      <div class="cover-meta-grid">
+        <div class="cover-meta-item">
+          <div class="cover-meta-label">Platform</div>
+          <div class="cover-meta-value">iOS (iPhone &amp; iPad)</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="cover-meta-label">Version</div>
+          <div class="cover-meta-value">1.0.0</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="cover-meta-label">App ID</div>
+          <div class="cover-meta-value">com.mburrzd.fashion</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="cover-meta-label">Date</div>
+          <div class="cover-meta-value">April 2025</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <div class="cover-footer-text">MBURRZD.COM &nbsp;·&nbsp; LUXURY BIG &amp; TALL MENSWEAR</div>
+      <div class="cover-confidential">Confidential</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  TABLE OF CONTENTS                                         -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="toc">
+    <div class="toc-eyebrow">Contents</div>
+    <div class="toc-title">What's Inside</div>
+
+    <ul class="toc-list">
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">01</span>
+          <span class="toc-label">Executive Overview</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">3</span>
+      </li>
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">02</span>
+          <span class="toc-label">App Features &amp; Screens</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">4</span>
+      </li>
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">03</span>
+          <span class="toc-label">Technical Architecture</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">6</span>
+      </li>
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">04</span>
+          <span class="toc-label">Credentials &amp; Configuration</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">7</span>
+      </li>
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">05</span>
+          <span class="toc-label">Development Setup</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">8</span>
+      </li>
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">06</span>
+          <span class="toc-label">Building &amp; Deploying</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">9</span>
+      </li>
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">07</span>
+          <span class="toc-label">Version Control — GitHub</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">11</span>
+      </li>
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">08</span>
+          <span class="toc-label">App Store Submission</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">12</span>
+      </li>
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">09</span>
+          <span class="toc-label">Post-Launch Maintenance</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">14</span>
+      </li>
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">10</span>
+          <span class="toc-label">Third-Party Services &amp; Costs</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">15</span>
+      </li>
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">11</span>
+          <span class="toc-label">Troubleshooting Reference</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">16</span>
+      </li>
+      <li class="toc-item">
+        <div class="toc-item-left">
+          <span class="toc-num">12</span>
+          <span class="toc-label">Quick Command Reference</span>
+        </div>
+        <div class="toc-dots"></div>
+        <span class="toc-page">17</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  01 — EXECUTIVE OVERVIEW                                   -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter no-break">
+    <div class="chapter-header">
+      <div class="chapter-num">01</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Introduction</div>
+        <div class="chapter-title">Executive Overview</div>
+      </div>
+    </div>
+
+    <p>The MBURRZD mobile app is a fully custom iOS shopping experience built for the MBURRZD luxury big-and-tall menswear brand. The app connects directly and in real time to the existing Shopify store, meaning all products, prices, inventory levels, and collections update automatically — no manual sync required.</p>
+
+    <p>The aesthetic is inspired by the world's most considered luxury fashion houses — Loro Piana, Fear of God, Amiri — translated into a mobile experience that matches the brand's premium positioning. Every screen has been built from scratch to reflect the MBURRZD identity: deep black, warm gold, Georgia serif typography.</p>
+
+    <h3>Design Principles</h3>
+    <div class="two-col">
+      <div class="callout">
+        <div class="callout-label">Visual Identity</div>
+        <p>Black (#0A0A0A) backgrounds, warm gold (#C9A96E) accents, Georgia serif for editorial headings, Inter for UI text.</p>
+      </div>
+      <div class="callout">
+        <div class="callout-label">Customer Experience</div>
+        <p>Curated, editorial home screen. Premium product photography at full bleed. Minimal friction from browse to checkout.</p>
+      </div>
+      <div class="callout">
+        <div class="callout-label">Commerce</div>
+        <p>100% live Shopify data. Cart and checkout handled natively by Shopify — secure, trusted, PCI compliant.</p>
+      </div>
+      <div class="callout">
+        <div class="callout-label">Personalisation</div>
+        <p>Find Your Fit quiz tailors size recommendations to height, weight, and body type — a differentiator for big &amp; tall.</p>
+      </div>
+    </div>
+
+    <h3>Current Status</h3>
+    <table>
+      <thead><tr><th>Item</th><th>Status</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Core app (all screens)</td><td><span class="badge" style="background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7;">Complete</span></td><td>Home, Shop, PDP, Cart, Wishlist, Account, Fit Quiz</td></tr>
+        <tr><td>Shopify integration</td><td><span class="badge" style="background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7;">Live</span></td><td>Real-time products, collections, cart, checkout</td></tr>
+        <tr><td>User authentication</td><td><span class="badge" style="background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7;">Complete</span></td><td>Email/password + Sign In with Apple via Supabase</td></tr>
+        <tr><td>Privacy Policy</td><td><span class="badge" style="background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7;">Complete</span></td><td>In-app screen + account deletion flow</td></tr>
+        <tr><td>Test device install</td><td><span class="badge" style="background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7;">Working</span></td><td>iPhone &amp; iPad registered and tested</td></tr>
+        <tr><td>App Store submission</td><td><span class="badge" style="background:#fff3e0;color:#e65100;border-color:#ffcc80;">Pending</span></td><td>Production build + review submission remaining</td></tr>
+        <tr><td>Android</td><td><span class="badge" style="background:#fce4ec;color:#c62828;border-color:#ef9a9a;">Future</span></td><td>Codebase supports Android; build not yet submitted</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  02 — FEATURES                                             -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter">
+    <div class="chapter-header">
+      <div class="chapter-num">02</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Product</div>
+        <div class="chapter-title">App Features &amp; Screens</div>
+      </div>
+    </div>
+
+    <p>The app is organised into five main tabs accessible from the bottom navigation bar. Each tab contains one or more screens.</p>
+
+    <h3>Home</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-card-title">Hero Section</div>
+        <p class="feature-card-desc">Full-bleed editorial hero image with animated gradient overlay, seasonal copy, and a direct CTA to the shop. Logo displayed at top.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-title">Brand Positioning</div>
+        <p class="feature-card-desc">Three animated lifestyle copy blocks fade in on scroll, separated by gold hairline dividers. Sets editorial tone.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-title">Collections &amp; New Arrivals</div>
+        <p class="feature-card-desc">Horizontally scrollable collection tiles. Vertically scrollable new arrivals grid. Both pull live from Shopify.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-title">Worn By</div>
+        <p class="feature-card-desc">Editorial influencer/brand social proof section. Currently features @mburrzd_ with real product photography.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-title">Testimonials</div>
+        <p class="feature-card-desc">Auto-rotating customer quote carousel. Fades between three testimonials every 4.5 seconds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-title">Fit Concierge Card</div>
+        <p class="feature-card-desc">Gold-bordered call-to-action card directing customers to the Find Your Fit quiz.</p>
+      </div>
+    </div>
+
+    <h3>Shop</h3>
+    <p>A full product grid with real-time Shopify inventory. Customers can search by keyword, sort by price or newest, and filter by collection. Each product card shows the product image, name, a feature descriptor line, and price. Sold-out products are clearly labelled.</p>
+
+    <h3>Product Detail</h3>
+    <p>Full product page with swipeable image gallery, colour swatch selector (extracted from Shopify variants), size selector with active state, expandable description accordions, "CRAFTED FOR PRECISION" key features section, and trust badges. The Add to Bag button is prominently placed in gold.</p>
+
+    <h3>Find Your Fit</h3>
+    <p>A four-step guided quiz unique to the MBURRZD experience. The customer selects their height, weight range, body type, and fit preference. The app then computes and displays a recommended size (S through 3XLT) with chest and waist measurements and personalised fit notes.</p>
+
+    <h3>Bag &amp; Checkout</h3>
+    <p>Cart screen shows all added items with quantity controls and live price totals. Checkout opens the secure Shopify checkout in a web view — meaning payment processing is handled entirely by Shopify (PCI DSS compliant). No card data ever passes through the app code.</p>
+
+    <h3>Account</h3>
+    <div class="two-col">
+      <div>
+        <h4>Unauthenticated State</h4>
+        <ul style="list-style:none; font-size:9.5pt; color:#555; line-height:2;">
+          <li>· Sign In with Apple (iOS-native, one tap)</li>
+          <li>· Email / password sign in</li>
+          <li>· New account registration</li>
+          <li>· Member perks showcase</li>
+          <li>· Privacy Policy link</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Authenticated State</h4>
+        <ul style="list-style:none; font-size:9.5pt; color:#555; line-height:2;">
+          <li>· Avatar with gold border + member badge</li>
+          <li>· Saved fit profile card</li>
+          <li>· Quick links: Wishlist, Orders, Fit Quiz</li>
+          <li>· Privacy Policy &amp; Settings</li>
+          <li>· Sign Out + Delete Account</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  03 — ARCHITECTURE                                         -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter">
+    <div class="chapter-header">
+      <div class="chapter-num">03</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Engineering</div>
+        <div class="chapter-title">Technical Architecture</div>
+      </div>
+    </div>
+
+    <h3>Technology Stack</h3>
+    <div style="margin: 8px 0 24px;">
+      <span class="pill">React Native 0.74</span>
+      <span class="pill">Expo SDK 51</span>
+      <span class="pill">TypeScript</span>
+      <span class="pill">EAS Build</span>
+      <span class="pill">Shopify Storefront API</span>
+      <span class="pill">Supabase Auth</span>
+      <span class="pill">Zustand</span>
+      <span class="pill">React Navigation 6</span>
+      <span class="pill">Sign In with Apple</span>
+    </div>
+
+    <h3>System Architecture</h3>
+    <div class="arch-diagram">
+      <div class="arch-row" style="margin-bottom:16px;">
+        <div class="arch-box">MBURRZD iOS App</div>
+        <span class="arch-arrow">──────────────</span>
+        <div class="arch-box">Shopify Storefront API</div>
+        <span class="arch-arrow">──</span>
+        <div class="arch-box">Shopify Store</div>
+      </div>
+      <div style="color:rgba(255,255,255,0.2); margin-left:80px; margin-bottom:16px;">│</div>
+      <div class="arch-row" style="margin-bottom:16px;">
+        <div style="width:80px; color:rgba(255,255,255,0.2); text-align:right; padding-right:12px;">├──</div>
+        <div class="arch-box">Supabase Auth</div>
+        <span class="arch-arrow">──────────────────────</span>
+        <div class="arch-box">User Database</div>
+      </div>
+      <div style="color:rgba(255,255,255,0.2); margin-left:80px; margin-bottom:16px;">│</div>
+      <div class="arch-row">
+        <div style="width:80px; color:rgba(255,255,255,0.2); text-align:right; padding-right:12px;">└──</div>
+        <div class="arch-box">Apple Auth Services</div>
+        <span class="arch-arrow">───────────────────</span>
+        <div class="arch-box">Sign In with Apple</div>
+      </div>
+    </div>
+
+    <h3>Code Structure</h3>
+    <table>
+      <thead><tr><th>Path</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>src/api/shopify.ts</td><td>All Shopify GraphQL queries — products, collections, cart mutations</td></tr>
+        <tr><td>src/lib/supabase.ts</td><td>Supabase client initialisation with AsyncStorage session persistence</td></tr>
+        <tr><td>src/store/authStore.ts</td><td>Zustand store — sign in, sign up, Apple auth, sign out, delete account</td></tr>
+        <tr><td>src/store/cartStore.ts</td><td>Live cart state, synced with Shopify cart API</td></tr>
+        <tr><td>src/store/wishlistStore.ts</td><td>In-memory wishlist state (persists for app session)</td></tr>
+        <tr><td>src/navigation/AppNavigator.tsx</td><td>Bottom tab navigator + screen stack definitions</td></tr>
+        <tr><td>src/theme/index.ts</td><td>Centralised design tokens (colours, typography constants)</td></tr>
+        <tr><td>src/screens/</td><td>All 10 individual screens</td></tr>
+        <tr><td>assets/</td><td>Static images: logo (PNG), hero, Worn By photo</td></tr>
+        <tr><td>app.json</td><td>Expo configuration: name, icon, splash, iOS entitlements, plugins</td></tr>
+        <tr><td>eas.json</td><td>Build profiles: preview (test device) and production (App Store)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  04 — CREDENTIALS                                          -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter">
+    <div class="chapter-header">
+      <div class="chapter-num">04</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Configuration</div>
+        <div class="chapter-title">Credentials &amp; Keys</div>
+      </div>
+    </div>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">Security Notice</div>
+      <p>The keys below connect the app to live services. Do not share them publicly, post them in a public GitHub repository, or send them over unencrypted channels.</p>
+    </div>
+
+    <div class="cred-card" style="margin-top:28px;">
+      <div class="cred-card-title">Shopify — Commerce &amp; Payments</div>
+      <div class="cred-row">
+        <span class="cred-key">Store Domain</span>
+        <span class="cred-val">553999-12.myshopify.com</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">Storefront Access Token</span>
+        <span class="cred-val">e847b5bc549850de42cfc97f3c28d80d</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">API Version</span>
+        <span class="cred-val">2024-01</span>
+      </div>
+    </div>
+
+    <div class="cred-card">
+      <div class="cred-card-title">Supabase — User Authentication</div>
+      <div class="cred-row">
+        <span class="cred-key">Project URL</span>
+        <span class="cred-val">https://nkmeeqpymvwqfsjeqwgy.supabase.co</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">Anon / Publishable Key</span>
+        <span class="cred-val">sb_publishable_TAyU_bEne0fW2z6-wnRgqg...</span>
+      </div>
+    </div>
+
+    <div class="cred-card">
+      <div class="cred-card-title">Apple Developer — iOS Build &amp; App Store</div>
+      <div class="cred-row">
+        <span class="cred-key">Account</span>
+        <span class="cred-val">Ambutterd@gmail.com</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">Team Name</span>
+        <span class="cred-val">Mista Burr Individual</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">Team ID</span>
+        <span class="cred-val">A32PJN4364</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">Bundle Identifier</span>
+        <span class="cred-val">com.mburrzd.fashion</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">EAS Project ID</span>
+        <span class="cred-val">b7b2c393-5690-4da0-a61a-17b9380948d1</span>
+      </div>
+    </div>
+
+    <h3>Registered Test Devices</h3>
+    <table>
+      <thead><tr><th>Device</th><th>UDID</th><th>Registered</th></tr></thead>
+      <tbody>
+        <tr><td>iPhone</td><td><code class="inline">00008150-000260113638401C</code></td><td>April 2025</td></tr>
+        <tr><td>iPad</td><td><code class="inline">00008112-001E18E926F9401E</code></td><td>April 2025</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  05 — DEVELOPMENT SETUP                                    -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter">
+    <div class="chapter-header">
+      <div class="chapter-num">05</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Getting Started</div>
+        <div class="chapter-title">Development Setup</div>
+      </div>
+    </div>
+
+    <p>The following steps prepare a Windows machine to build, run, and edit the app. This only needs to be done once per computer.</p>
+
+    <h3>Prerequisites</h3>
+    <ul class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Install Node.js</strong>
+          <p>Download the LTS version from <strong>nodejs.org</strong> and run the installer with all defaults. Provides the JavaScript runtime used by the build tools.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Install Git</strong>
+          <p>Download from <strong>git-scm.com/download/win</strong> — accept all defaults. Git tracks every change to the code and enables collaboration and backup.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Install the EAS CLI</strong>
+          <p>Open PowerShell and run:</p>
+          <div class="code-block"><code>npm install -g eas-cli</code></div>
+          <p>EAS (Expo Application Services) is the cloud build service that compiles the app.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>Navigate to the project and install dependencies</strong>
+          <div class="code-block"><code>cd "C:\Users\Royston_Nnamdi\OneDrive - Dell Technologies\Documents\Windsurf_Projects\AppBuild"
+npm install</code></div>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>Log in to EAS</strong>
+          <div class="code-block"><code>$env:NODE_TLS_REJECT_UNAUTHORIZED=0; eas login</code></div>
+          <p>The <code class="inline">NODE_TLS_REJECT_UNAUTHORIZED=0</code> prefix is required on Dell corporate laptops due to the company SSL proxy.</p>
+        </div>
+      </li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-label">Local Preview (No Build Required)</div>
+      <p>Install <strong>Expo Go</strong> from the App Store on your iPhone, then run <code class="inline">npm start</code> in the project folder. Scan the QR code that appears in PowerShell. The app will open instantly. Note: Sign In with Apple and some native features require a real build.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  06 — BUILDING & DEPLOYING                                 -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter">
+    <div class="chapter-header">
+      <div class="chapter-num">06</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Deployment</div>
+        <div class="chapter-title">Building &amp; Deploying</div>
+      </div>
+    </div>
+
+    <h3>Build Profiles</h3>
+    <table>
+      <thead><tr><th>Profile</th><th>Purpose</th><th>Output</th><th>How to Install</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>preview</td>
+          <td>Test on personal registered devices</td>
+          <td>Ad-hoc .ipa</td>
+          <td>Scan QR code in PowerShell terminal</td>
+        </tr>
+        <tr>
+          <td>production</td>
+          <td>Submit to the App Store</td>
+          <td>Distribution .ipa</td>
+          <td>Upload via Transporter app on Mac</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Running a Preview Build (Test Devices)</h3>
+    <ul class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Run the build command</strong>
+          <div class="code-block"><code>$env:NODE_TLS_REJECT_UNAUTHORIZED=0; eas build --platform ios --profile preview</code></div>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Authenticate with Apple when prompted</strong>
+          <p>Enter your Apple ID and password. EAS will log in, sync capabilities, and generate a new provisioning profile if needed.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Select your devices</strong>
+          <p>Use the spacebar to select both iPhone and iPad from the list, then press Enter.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>Wait for the build to complete</strong>
+          <p>Free tier builds take approximately 15–30 minutes. Progress can be tracked at expo.dev.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>Install via QR code</strong>
+          <p>When the build finishes, a QR code appears in the PowerShell terminal. Scan it with the iPhone camera to install. <strong>Always use the terminal QR code</strong> — the expo.dev web link is unreliable on these devices.</p>
+        </div>
+      </li>
+    </ul>
+
+    <h3>Running a Production Build (App Store)</h3>
+    <div class="code-block"><code>$env:NODE_TLS_REJECT_UNAUTHORIZED=0; eas build --platform ios --profile production</code></div>
+    <p>This generates a distribution-signed .ipa for App Store submission. Download the file from expo.dev when complete and upload it using the <strong>Transporter</strong> app (Mac App Store, free).</p>
+
+    <div class="callout">
+      <div class="callout-label">Important</div>
+      <p>Always run a <strong>preview</strong> build and test on device before running a <strong>production</strong> build. The production process requires full Apple credentials and generates a signed binary that counts toward your App Store version history.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  07 — GITHUB                                               -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter">
+    <div class="chapter-header">
+      <div class="chapter-num">07</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Version Control</div>
+        <div class="chapter-title">Saving to GitHub</div>
+      </div>
+    </div>
+
+    <p>GitHub stores the complete history of every change made to the app. Think of it as a backup system that never forgets — you can restore any previous version of the app at any time. It also enables collaboration if you bring in additional developers.</p>
+
+    <h3>First-Time Setup</h3>
+    <ul class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Create a GitHub account</strong>
+          <p>Go to <strong>github.com</strong> and sign up. Choose a username that represents you or the brand.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Create a new private repository</strong>
+          <p>Click the <strong>+</strong> icon → New repository → name it <code class="inline">mburrzd-app</code> → set to <strong>Private</strong> → click Create repository.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Create a .gitignore file</strong>
+          <p>In the AppBuild folder, create a plain text file called <code class="inline">.gitignore</code> with this content to exclude large/generated folders:</p>
+          <div class="code-block"><code>node_modules/
+.expo/
+dist/
+android/
+ios/
+*.orig.*
+web-build/
+.DS_Store</code></div>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>Push the code to GitHub</strong>
+          <div class="code-block"><code>cd "C:\Users\Royston_Nnamdi\OneDrive - Dell Technologies\Documents\Windsurf_Projects\AppBuild"
+
+git init
+git config user.email "rstonokafor@gmail.com"
+git config user.name "Royston"
+git add .
+git commit -m "Initial commit: full MBURRZD app v1.0"
+git remote add origin https://github.com/YOUR-USERNAME/mburrzd-app.git
+git push -u origin main</code></div>
+          <p>When asked for a password, use a <strong>Personal Access Token</strong> from GitHub (Settings → Developer settings → Personal access tokens → Generate new token → tick "repo").</p>
+        </div>
+      </li>
+    </ul>
+
+    <h3>Saving Future Changes</h3>
+    <p>Any time you update the app, save your changes to GitHub with three commands:</p>
+    <div class="code-block"><code>git add .
+git commit -m "Brief description of what you changed"
+git push</code></div>
+
+    <h3>Getting the Code on a New Computer</h3>
+    <div class="code-block"><code>git clone https://github.com/YOUR-USERNAME/mburrzd-app.git
+cd mburrzd-app
+npm install</code></div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  08 — APP STORE                                            -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter">
+    <div class="chapter-header">
+      <div class="chapter-num">08</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Launch</div>
+        <div class="chapter-title">App Store Submission</div>
+      </div>
+    </div>
+
+    <h3>Pre-Submission Checklist</h3>
+    <ul class="checklist">
+      <li><div class="check-box"></div> Apple Developer Program membership active ($99/year at developer.apple.com)</li>
+      <li><div class="check-box"></div> Supabase: Email provider enabled (Authentication → Providers → Email)</li>
+      <li><div class="check-box"></div> Supabase: Apple provider enabled with Team ID A32PJN4364</li>
+      <li><div class="check-box"></div> Privacy Policy hosted at a public URL (e.g. mburrzd.com/privacy)</li>
+      <li><div class="check-box"></div> App icon is PNG format, 1024×1024px, no transparency</li>
+      <li><div class="check-box"></div> App Store screenshots prepared (6.7" iPhone minimum required)</li>
+      <li><div class="check-box"></div> Account deletion flow tested and working</li>
+      <li><div class="check-box"></div> Sign In with Apple tested on a real device</li>
+      <li><div class="check-box"></div> Production build created and downloaded</li>
+    </ul>
+
+    <h3>Required Screenshots</h3>
+    <table>
+      <thead><tr><th>Device</th><th>Resolution</th><th>Required?</th></tr></thead>
+      <tbody>
+        <tr><td>iPhone 6.7" (15 Pro Max)</td><td>1290 × 2796 px</td><td>Yes — mandatory</td></tr>
+        <tr><td>iPhone 6.5" (14 Plus)</td><td>1284 × 2778 px</td><td>Recommended</td></tr>
+        <tr><td>iPad 12.9"</td><td>2048 × 2732 px</td><td>Required (supportsTablet: true)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Submission Steps</h3>
+    <ul class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Run the production build</strong>
+          <div class="code-block"><code>$env:NODE_TLS_REJECT_UNAUTHORIZED=0; eas build --platform ios --profile production</code></div>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Download the .ipa from expo.dev</strong>
+          <p>Navigate to expo.dev → your project → builds → download the production .ipa file.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Upload with Transporter (Mac required)</strong>
+          <p>Open <strong>Transporter</strong> (free on Mac App Store) → sign in with Apple ID → drag in the .ipa → click Deliver.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>Complete the App Store Connect listing</strong>
+          <p>Go to <strong>appstoreconnect.apple.com</strong> → My Apps → New App → fill in name (MBURRZD), bundle ID (com.mburrzd.fashion), category (Shopping), description, screenshots, privacy policy URL, and age rating.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>Submit for review</strong>
+          <p>Click <strong>Submit for Review</strong>. Apple's review takes 24–72 hours for first submissions. You'll receive an email when approved or if changes are requested.</p>
+        </div>
+      </li>
+    </ul>
+
+    <div class="callout callout-success">
+      <div class="callout-label">Tip — Use TestFlight First</div>
+      <p>Consider releasing via <strong>TestFlight</strong> (Apple's beta platform) before your full App Store submission. TestFlight builds are faster to approve (no review) and let you gather feedback from up to 10,000 external testers. Enable it in App Store Connect under the TestFlight tab.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  09 — MAINTENANCE                                          -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter">
+    <div class="chapter-header">
+      <div class="chapter-num">09</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Operations</div>
+        <div class="chapter-title">Post-Launch Maintenance</div>
+      </div>
+    </div>
+
+    <h3>What Updates Automatically</h3>
+    <p>Because the app fetches data live from Shopify, the following update instantly — no new app build required:</p>
+    <table>
+      <thead><tr><th>What Changes</th><th>How to Update</th></tr></thead>
+      <tbody>
+        <tr><td>Product names, descriptions, prices</td><td>Edit in Shopify Admin → Products</td></tr>
+        <tr><td>Product photos</td><td>Upload new photos in Shopify Admin</td></tr>
+        <tr><td>Stock / availability / sold out status</td><td>Managed automatically by Shopify inventory</td></tr>
+        <tr><td>Collections</td><td>Create / edit / delete in Shopify Admin → Collections</td></tr>
+        <tr><td>Discount codes</td><td>Create in Shopify Admin → Discounts</td></tr>
+      </tbody>
+    </table>
+
+    <h3>What Requires a New App Build</h3>
+    <table>
+      <thead><tr><th>Change</th><th>Files to Edit</th></tr></thead>
+      <tbody>
+        <tr><td>Hero image or logo</td><td>Replace file in <code class="inline">assets/</code>, update reference in HomeScreen.tsx</td></tr>
+        <tr><td>Gold accent colour</td><td><code class="inline">src/theme/index.ts</code> — change <code class="inline">accent</code> value</td></tr>
+        <tr><td>Worn By section photos/handles</td><td><code class="inline">src/screens/HomeScreen.tsx</code> — WORN_BY array</td></tr>
+        <tr><td>Privacy policy text</td><td><code class="inline">src/screens/PrivacyPolicyScreen.tsx</code> — SECTIONS array</td></tr>
+        <tr><td>Fit quiz options or size logic</td><td><code class="inline">src/screens/FitQuizScreen.tsx</code></td></tr>
+        <tr><td>Adding a new screen</td><td>Create in <code class="inline">src/screens/</code>, register in AppNavigator.tsx</td></tr>
+        <tr><td>App icon or splash screen</td><td>Replace PNG in <code class="inline">assets/</code>, update <code class="inline">app.json</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Version Numbering</h3>
+    <p>Before each App Store update, increment the version number in <code class="inline">app.json</code>:</p>
+    <div class="code-block"><code>"version": "1.0.1"   ← bug fixes and small updates
+"version": "1.1.0"   ← new features
+"version": "2.0.0"   ← major redesign or rebuild</code></div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  10 — SERVICES & COSTS                                     -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter">
+    <div class="chapter-header">
+      <div class="chapter-num">10</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Services</div>
+        <div class="chapter-title">Third-Party Services &amp; Costs</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="service-card">
+        <div class="service-card-name">Shopify</div>
+        <div class="service-card-role">E-commerce, products, cart, payments, checkout</div>
+        <div class="service-card-cost">Existing plan — no additional cost</div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-name">Expo / EAS</div>
+        <div class="service-card-role">Cloud build service for the iOS app</div>
+        <div class="service-card-cost">Free (Legacy tier — slower queue)</div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-name">Apple Developer</div>
+        <div class="service-card-role">Required for iOS builds &amp; App Store</div>
+        <div class="service-card-cost">$99 / year</div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-name">Supabase</div>
+        <div class="service-card-role">User accounts &amp; authentication database</div>
+        <div class="service-card-cost">Free up to 50,000 monthly active users</div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-name">GitHub</div>
+        <div class="service-card-role">Code storage, version history, backup</div>
+        <div class="service-card-cost">Free for private repositories</div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-name">Apple (Sign In)</div>
+        <div class="service-card-role">One-tap authentication for iPhone users</div>
+        <div class="service-card-cost">Free (included with Developer account)</div>
+      </div>
+    </div>
+
+    <h3>Total Recurring Cost</h3>
+    <table>
+      <thead><tr><th>Service</th><th>Frequency</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td>Apple Developer Program</td><td>Annual</td><td>$99 / year</td></tr>
+        <tr><td>Supabase</td><td>Monthly</td><td>$0 (free tier)</td></tr>
+        <tr><td>Expo EAS</td><td>Monthly</td><td>$0 (free tier)</td></tr>
+        <tr><td>GitHub</td><td>Monthly</td><td>$0 (free tier)</td></tr>
+        <tr><td><strong>Total</strong></td><td></td><td><strong>$99 / year</strong></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  11 — TROUBLESHOOTING                                      -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter">
+    <div class="chapter-header">
+      <div class="chapter-num">11</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Support</div>
+        <div class="chapter-title">Troubleshooting Reference</div>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>Error / Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>SSL / certificate error on EAS commands</td>
+          <td>Dell corporate SSL proxy</td>
+          <td>Prefix every EAS command with <code class="inline">$env:NODE_TLS_REJECT_UNAUTHORIZED=0;</code></td>
+        </tr>
+        <tr>
+          <td>Build fails: "icon should point to .png"</td>
+          <td>icon or splash pointing to a .jpg file</td>
+          <td>Ensure <code class="inline">app.json</code> uses <code class="inline">logoo.png</code>. PNG file must exist in assets/</td>
+        </tr>
+        <tr>
+          <td>QR code from expo.dev doesn't work</td>
+          <td>Known issue with expo.dev on these devices</td>
+          <td>Use the QR code that appears in the PowerShell terminal — always reliable</td>
+        </tr>
+        <tr>
+          <td>"Session expired" on EAS login</td>
+          <td>EAS session token has expired</td>
+          <td>Run <code class="inline">$env:NODE_TLS_REJECT_UNAUTHORIZED=0; eas login</code> again</td>
+        </tr>
+        <tr>
+          <td>App shows old products</td>
+          <td>Data is fetched on screen load; may be cached</td>
+          <td>Force-close the app and reopen it</td>
+        </tr>
+        <tr>
+          <td>Auth / sign in not working</td>
+          <td>Supabase provider not enabled, or wrong keys</td>
+          <td>Check Supabase dashboard → Authentication → Providers. Verify keys in supabase.ts</td>
+        </tr>
+        <tr>
+          <td>Build stuck in queue for a long time</td>
+          <td>Free tier queue is busy</td>
+          <td>Normal — free builds can take 30+ minutes. Check progress at expo.dev</td>
+        </tr>
+        <tr>
+          <td>Provisioning profile error during build</td>
+          <td>Profile is invalid or devices changed</td>
+          <td>EAS automatically regenerates it. If it fails, run a new interactive build from PowerShell</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  12 — QUICK REFERENCE                                      -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="chapter" style="border-bottom:none;">
+    <div class="chapter-header">
+      <div class="chapter-num">12</div>
+      <div class="chapter-title-group">
+        <div class="chapter-eyebrow">Reference</div>
+        <div class="chapter-title">Quick Command Reference</div>
+      </div>
+    </div>
+
+    <p>Open PowerShell and navigate to the project folder first:</p>
+    <div class="code-block"><code>cd "C:\Users\Royston_Nnamdi\OneDrive - Dell Technologies\Documents\Windsurf_Projects\AppBuild"</code></div>
+
+    <h3>Development</h3>
+    <table>
+      <thead><tr><th>Task</th><th>Command</th></tr></thead>
+      <tbody>
+        <tr><td>Start local dev server (Expo Go)</td><td><code class="inline">npm start</code></td></tr>
+        <tr><td>Install / refresh dependencies</td><td><code class="inline">npm install</code></td></tr>
+        <tr><td>Check for TypeScript errors</td><td><code class="inline">npx tsc --noEmit</code></td></tr>
+        <tr><td>Log in to EAS</td><td><code class="inline">$env:NODE_TLS_REJECT_UNAUTHORIZED=0; eas login</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Building</h3>
+    <table>
+      <thead><tr><th>Task</th><th>Command</th></tr></thead>
+      <tbody>
+        <tr><td>Build for test devices (iOS)</td><td><code class="inline">$env:NODE_TLS_REJECT_UNAUTHORIZED=0; eas build --platform ios --profile preview</code></td></tr>
+        <tr><td>Build for App Store (iOS)</td><td><code class="inline">$env:NODE_TLS_REJECT_UNAUTHORIZED=0; eas build --platform ios --profile production</code></td></tr>
+        <tr><td>Build for Android test</td><td><code class="inline">$env:NODE_TLS_REJECT_UNAUTHORIZED=0; eas build --platform android --profile preview</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>GitHub</h3>
+    <table>
+      <thead><tr><th>Task</th><th>Command</th></tr></thead>
+      <tbody>
+        <tr><td>Save all changes</td><td><code class="inline">git add . &amp;&amp; git commit -m "your message" &amp;&amp; git push</code></td></tr>
+        <tr><td>Check what has changed</td><td><code class="inline">git status</code></td></tr>
+        <tr><td>See change history</td><td><code class="inline">git log --oneline</code></td></tr>
+        <tr><td>Download to a new computer</td><td><code class="inline">git clone https://github.com/YOUR-USERNAME/mburrzd-app.git</code></td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:48px; padding-top:32px; border-top:1px solid #ece9e3;">
+      <div style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif; font-size:22pt; font-weight:300; letter-spacing:6px; color:#1a1a1a; margin-bottom:8px;">MBURRZD</div>
+        <div style="font-size:8pt; color:#aaa; letter-spacing:2px;">LUXURY BIG &amp; TALL MENSWEAR &nbsp;·&nbsp; MBURRZD.COM</div>
+        <div style="font-size:7.5pt; color:#ccc; letter-spacing:1px; margin-top:16px;">Documentation prepared April 2025 &nbsp;·&nbsp; App Version 1.0.0 &nbsp;·&nbsp; Confidential</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

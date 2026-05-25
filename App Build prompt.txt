@@ -1,0 +1,30 @@
+Build a luxury mobile commerce app for Mburrzd, a premium big-and-tall menswear brand. Use React Native. Connect dynamically to Shopify via Storefront API for products, images, collections, pricing, variants, and availability. Do not hardcode catalog data.
+The app must include:
+1. Splash screen
+2. Home screen with hero banner, featured collections, new arrivals, featured products, and a Mburrzd Club section
+3. Shop/catalog screen with 2-column grid, filter, sort, and wishlist heart
+4. Product detail page with image gallery, price, color, size selector, size guide, fit notes, accordions, add-to-bag CTA, and wishlist
+5. Find Your Fit quiz using height, weight, body type, and fit preference, returning recommended size and fit notes
+6. Wishlist screen with persistent saved items
+7. Cart/bag screen with Shopify checkout flow
+8. Account screen shell with profile, saved fit, wishlist, settings, and future-ready membership area
+Design direction:
+- dark luxury theme
+- black/charcoal background
+- warm gold/beige accents
+- spacious layout
+- premium typography
+- smooth transitions
+- not cluttered
+- not generic
+- must feel like a luxury brand app, not a discount store
+Architecture:
+- Shopify for products and media
+- Supabase optional for wishlist persistence, fit quiz storage, app config, and analytics
+- modular reusable components
+- future-ready for push notifications, exclusive drops, VIP membership, and editorial content
+Build in phases:
+Phase 1: shell, navigation, theme, splash, home, shop skeleton
+Phase 2: Shopify integration, collections, products, PDP, cart basics
+Phase 3: fit quiz, wishlist, account shell, analytics
+Phase 4: polish, performance, QA, beta-ready app
